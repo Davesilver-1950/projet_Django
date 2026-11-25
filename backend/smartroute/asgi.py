@@ -1,0 +1,6 @@
+"""Configuration ASGI pour SmartRoute CM."""
+import os
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "smartroute.settings")
+application = get_asgi_application()
