@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ItinerairesView from "../views/ItinerairesView.vue";
 import LoginView from "../views/LoginView.vue";
 import ModulePlaceholderView from "../views/ModulePlaceholderView.vue";
 
@@ -9,13 +10,8 @@ const routes = [
   {
     path: "/itineraires",
     name: "itineraires",
-    component: ModulePlaceholderView,
-    meta: {
-      requiresAuth: true,
-      title: "Moteur d'itinéraires (Dijkstra)",
-      owner: "Yannis",
-      branch: "feat/yannis-dijkstra",
-    },
+    component: ItinerairesView,
+    meta: { requiresAuth: true },
   },
   {
     path: "/reseau",

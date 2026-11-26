@@ -59,13 +59,19 @@ Activer l'environnement virtuel :
 - **Windows (PowerShell)** : `.\.venv\Scripts\Activate.ps1`
 - **Linux / macOS** : `source .venv/bin/activate`
 
-Installer les dépendances, appliquer les migrations et lancer le serveur :
+Installer les dépendances, appliquer les migrations, charger le jeu de démonstration fictif et lancer le serveur :
 
 ```bash
 pip install -r requirements.txt
 python manage.py migrate
+python manage.py seed_demo_itineraires
 python manage.py runserver
 ```
+
+Comptes fictifs créés par `seed_demo_itineraires` (usage local uniquement) :
+- **Gestionnaire** : `gestionnaire_demo` / `SmartRouteGest2026!`
+- **Administrateur** : `admin_demo` / `SmartRouteAdmin2026!`
+- **Livreur** : `livreur_demo` / `SmartRouteLiv2026!`
 
 Vérification rapide : ouvrir `http://127.0.0.1:8000/api/health/` — doit renvoyer HTTP `200` avec `"status": "ok"` et `"donnees_fictives": true`.
 
@@ -90,6 +96,14 @@ Depuis le dossier `backend/` (avec l'environnement virtuel activé) :
 ```bash
 python manage.py test
 ```
+
+Tests du module `itineraires` (T1, T2, pondération, permissions API, erreur `422 AUCUN_ITINERAIRE`, scénario avant/après, performance 100 nœuds) :
+
+```bash
+python manage.py test apps.itineraires
+```
+
+Documentation technique du moteur d'itinéraires : [`docs/moteur-itineraires.md`](docs/moteur-itineraires.md).
 
 ---
 
