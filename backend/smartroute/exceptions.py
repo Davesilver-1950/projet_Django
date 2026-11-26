@@ -11,9 +11,40 @@ from rest_framework.exceptions import (
 from rest_framework.response import Response
 from rest_framework.views import exception_handler
 
+from apps.itineraires.exceptions import AucunItineraireError, PoidsInvalideError
+
+HTTP_422 = getattr(status, "HTTP_422_UNPROCESSABLE_ENTITY", 422)
+
 
 def custom_exception_handler(exc, context):
     """Formate toutes les erreurs API au format uniforme {"code", "message", "details"}."""
+    if isinstance(exc, AucunItineraireError):
+        return Response(
+            {
+                "code": exc.code,
+                "message": exc.message,
+                "details": {
+                    "origine": exc.origine,
+                    "destination": exc.destination,
+                    "type_vehicule": exc.type_vehicule,
+                },
+            },
+            status=HTTP_422,
+        )
+
+    if isinstance(exc, PoidsInvalideError):
+        return Response(
+            {
+                "code": exc.code,
+                "message": exc.message,
+                "details": {
+                    "champ": exc.champ,
+                    "valeur": exc.valeur,
+                },
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     response = exception_handler(exc, context)
     if response is None:
         return None
