@@ -36,7 +36,15 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
+    # Modules métier SmartRoute CM
+    "apps.accounts",
+    "apps.reseau",
+    "apps.flotte",
+    "apps.tournees",
+    "apps.itineraires",
 ]
+
+AUTH_USER_MODEL = "accounts.Utilisateur"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
