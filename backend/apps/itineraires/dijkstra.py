@@ -258,6 +258,8 @@ def dijkstra(
             origine=origine_label,
             destination=dest_label,
             type_vehicule=type_vehicule,
+            origine_id=origine_id,
+            destination_id=destination_id,
         )
 
     chemin: list[AreteGraphe] = []

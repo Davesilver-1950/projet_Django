@@ -52,4 +52,5 @@ flowchart LR
 | Véhicules, points de livraison, colis | Lire | Gérer | Ceux de ses tournées |
 | Tournées et étapes | Lire | Créer, calculer, modifier | Uniquement les siennes |
 | Calcul et comparaison d'itinéraires | — (historique lecture) | Exécuter | — |
+| `/api/itineraires/points/` et `/api/itineraires/ponderation/` (lecture seule) | Lire | Lire | Lire |
 | Tableau de bord | Lire | Lire | — |

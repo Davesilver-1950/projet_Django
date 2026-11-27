@@ -250,6 +250,8 @@ class ItinerairesAPITests(APITestCase):
         self.assertEqual(body["code"], "AUCUN_ITINERAIRE")
         self.assertEqual(body["details"]["origine"], "Bonanjo")
         self.assertEqual(body["details"]["destination"], "Île Manoka")
+        self.assertEqual(body["details"]["origine_id"], self.p_bonanjo.id)
+        self.assertEqual(body["details"]["destination_id"], self.p_isole.id)
 
     def test_entrees_invalides_retournent_400_structure(self):
         """ENF-04 : critère inconnu, point inexistant -> 400 structuré, jamais 500."""

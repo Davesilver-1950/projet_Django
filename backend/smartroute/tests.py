@@ -19,3 +19,17 @@ class HealthCheckTests(TestCase):
         self.assertEqual(data["service"], "SmartRoute CM API")
         self.assertEqual(data["database"], "ok")
         self.assertTrue(data["donnees_fictives"])
+
+
+class RouteApiInconnueTests(TestCase):
+    """ENF-04 : une URL inconnue sous /api/ renvoie un 404 JSON uniforme."""
+
+    def test_url_inconnue_retourne_404_json(self):
+        client = APIClient()
+        for response in (client.get("/api/inconnu/"), client.post("/api/reseau/inconnu/")):
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(response.json()["code"], "RESSOURCE_INTROUVABLE")
+
+    def test_redirection_slash_final_conservee(self):
+        response = APIClient().get("/api/health")
+        self.assertRedirects(response, "/api/health/", status_code=301)

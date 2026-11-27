@@ -64,6 +64,8 @@ Erreur `422` si aucun chemin :
   "code": "AUCUN_ITINERAIRE",
   "message": "Aucun itinéraire praticable trouvé entre 'Bonanjo' et 'Île Manoka' pour le type de véhicule 'moto'.",
   "details": {
+    "origine_id": 1,
+    "destination_id": 11,
     "origine": "Bonanjo",
     "destination": "Île Manoka",
     "type_vehicule": "moto"
@@ -75,6 +77,7 @@ Erreur `422` si aucun chemin :
 
 - **Mode 3 critères** : `?origine_id=1&destination_id=9&type_vehicule=vehicule_leger`
 - **Mode avant/après** : `?calcul_avant_id=1&recalculer=true` ou `?calcul_avant_id=1&calcul_apres_id=2`
+- **Persistance** : en mode avant/après, un recalcul (`recalculer=true`, ou `calcul_apres_id` absent) enregistre un nouveau `CalculItineraire` dans l'historique, bien que la requête soit un `GET`.
 
 ### Autres endpoints du module
 

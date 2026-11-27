@@ -1,8 +1,8 @@
 """Configuration des URLs principales de SmartRoute CM."""
 
 from django.contrib import admin
-from django.urls import include, path
-from smartroute.views import health_check
+from django.urls import include, path, re_path
+from smartroute.views import api_route_introuvable, health_check
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -12,4 +12,6 @@ urlpatterns = [
     path("api/flotte/", include("apps.flotte.urls")),
     path("api/tournees/", include("apps.tournees.urls")),
     path("api/itineraires/", include("apps.itineraires.urls")),
+    # Toujours en dernier. Le "/" final exigé préserve la redirection APPEND_SLASH.
+    re_path(r"^api/(?:.*/)?$", api_route_introuvable),
 ]

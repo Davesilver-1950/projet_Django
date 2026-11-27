@@ -26,7 +26,11 @@ class AucunItineraireError(Exception):
         destination,
         type_vehicule: str,
         message: str | None = None,
+        origine_id: int | None = None,
+        destination_id: int | None = None,
     ):
+        self.origine_id = origine_id
+        self.destination_id = destination_id
         self.origine = origine
         self.destination = destination
         self.type_vehicule = type_vehicule

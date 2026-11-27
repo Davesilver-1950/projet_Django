@@ -24,6 +24,8 @@ def custom_exception_handler(exc, context):
                 "code": exc.code,
                 "message": exc.message,
                 "details": {
+                    "origine_id": exc.origine_id,
+                    "destination_id": exc.destination_id,
                     "origine": exc.origine,
                     "destination": exc.destination,
                     "type_vehicule": exc.type_vehicule,

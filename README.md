@@ -53,11 +53,21 @@ Adaptez `.env` avec vos identifiants PostgreSQL (`DB_ENGINE=postgresql` par déf
 Créez la base et l'utilisateur dans PostgreSQL (`psql -U postgres`) :
 
 ```sql
-CREATE USER smartroute_user WITH PASSWORD 'mot_de_passe_fictif_local';
+CREATE USER smartroute_user WITH PASSWORD 'mot_de_passe_fictif_local' CREATEDB;
 CREATE DATABASE smartroute_cm OWNER smartroute_user;
 ```
 
-*(Optionnel)* Pour un test rapide sans PostgreSQL local, passez `DB_ENGINE=sqlite` dans `.env`.
+Le droit `CREATEDB` est nécessaire à `python manage.py test`, qui crée une base de test temporaire (poste de développement local uniquement).
+
+Si l'utilisateur existe déjà (ou si son mot de passe est refusé), mettez-le à jour :
+
+```sql
+ALTER USER smartroute_user WITH PASSWORD 'mot_de_passe_fictif_local' CREATEDB;
+```
+
+Le mot de passe doit être identique à `POSTGRES_PASSWORD` dans `.env`.
+
+*(Optionnel)* Pour un test rapide sans PostgreSQL local, passez `DB_ENGINE=sqlite` dans `.env`. Sans fichier `.env` (ou sans variable `DB_ENGINE`), Django utilise SQLite.
 
 ### 3.2 Back-end Django
 
