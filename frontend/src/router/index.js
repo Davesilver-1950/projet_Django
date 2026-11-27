@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import ItinerairesView from "../views/ItinerairesView.vue";
 import LoginView from "../views/LoginView.vue";
 import ModulePlaceholderView from "../views/ModulePlaceholderView.vue";
+import UtilisateursView from "../views/UtilisateursView.vue";
 
 const routes = [
   { path: "/", name: "home", component: HomeView },
@@ -49,13 +50,8 @@ const routes = [
   {
     path: "/utilisateurs",
     name: "utilisateurs",
-    component: ModulePlaceholderView,
-    meta: {
-      requiresAuth: true,
-      title: "Comptes et rôles",
-      owner: "Sandra",
-      branch: "feat/sandra-auth",
-    },
+    component: UtilisateursView,
+    meta: { requiresAuth: true, roles: ["admin"] },
   },
 ];
 
@@ -68,6 +64,18 @@ router.beforeEach((to) => {
   const token = localStorage.getItem("smartroute_access");
   if (to.meta.requiresAuth && !token) {
     return { name: "login", query: { redirect: to.fullPath } };
+  }
+  // Garde par rôle (confort d'affichage : le vrai contrôle reste côté serveur).
+  if (to.meta.roles) {
+    let role = null;
+    try {
+      role = JSON.parse(localStorage.getItem("smartroute_user"))?.role ?? null;
+    } catch {
+      role = null;
+    }
+    if (!to.meta.roles.includes(role)) {
+      return { name: "home" };
+    }
   }
   return true;
 });
