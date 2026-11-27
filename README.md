@@ -46,7 +46,18 @@ cd projet_Django
 cp .env.example .env
 ```
 
-Adaptez `.env` si vous utilisez PostgreSQL (`DB_ENGINE=postgresql` et paramètres `POSTGRES_*`). Par défaut dans `.env.example`, `DB_ENGINE=sqlite` permet un démarrage immédiat sans serveur PostgreSQL local.
+Adaptez `.env` avec vos identifiants PostgreSQL (`DB_ENGINE=postgresql` par défaut dans `.env.example`).
+
+#### Initialisation de la base PostgreSQL
+
+Créez la base et l'utilisateur dans PostgreSQL (`psql -U postgres`) :
+
+```sql
+CREATE USER smartroute_user WITH PASSWORD 'mot_de_passe_fictif_local';
+CREATE DATABASE smartroute_cm OWNER smartroute_user;
+```
+
+*(Optionnel)* Pour un test rapide sans PostgreSQL local, passez `DB_ENGINE=sqlite` dans `.env`.
 
 ### 3.2 Back-end Django
 
