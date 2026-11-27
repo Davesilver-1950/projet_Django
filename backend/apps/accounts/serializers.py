@@ -90,21 +90,31 @@ class UtilisateurSerializer(serializers.ModelSerializer):
         user = Utilisateur(**validated_data)
         user.set_password(password)
         user.save()
-        if user.role == RoleUtilisateur.LIVREUR:
-            Livreur.objects.create(
-                utilisateur=user,
-                nom=nom or user.get_full_name() or user.username,
-                telephone_fictif=telephone or "000000000",
-            )
+        self._assurer_profil_livreur(user, nom, telephone)
         return user
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         password = validated_data.pop("password", None)
-        validated_data.pop("nom", None)
-        validated_data.pop("telephone_fictif", None)
+        nom = validated_data.pop("nom", None)
+        telephone = validated_data.pop("telephone_fictif", None)
         for champ, valeur in validated_data.items():
             setattr(instance, champ, valeur)
         if password:
             instance.set_password(password)
         instance.save()
+        self._assurer_profil_livreur(instance, nom, telephone)
         return instance
+
+    @staticmethod
+    def _assurer_profil_livreur(user, nom, telephone):
+        """Crée le profil Livreur s'il manque ; un profil existant n'est pas modifié."""
+        if user.role != RoleUtilisateur.LIVREUR:
+            return
+        Livreur.objects.get_or_create(
+            utilisateur=user,
+            defaults={
+                "nom": nom or user.get_full_name() or user.username,
+                "telephone_fictif": telephone or "000000000",
+            },
+        )

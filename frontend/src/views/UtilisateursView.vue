@@ -88,7 +88,12 @@ async function creer() {
   envoi.value = true;
   message.value = "";
   try {
-    await api.post("/auth/utilisateurs/", { ...form });
+    // nom et téléphone ne concernent que les livreurs : l'API refuse les champs vides.
+    const { nom, telephone_fictif, ...compte } = form;
+    await api.post(
+      "/auth/utilisateurs/",
+      form.role === "livreur" ? { ...compte, nom, telephone_fictif } : compte
+    );
     Object.assign(form, { username: "", email: "", password: "", nom: "", telephone_fictif: "" });
     await charger();
   } catch (err) {

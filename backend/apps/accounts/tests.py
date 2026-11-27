@@ -152,6 +152,27 @@ class CrudComptesTests(APITestCase):
         url = reverse("accounts:utilisateur-detail", args=[self.admin.pk])
         self.assertEqual(self.client.delete(url).status_code, 403)
 
+    def test_creation_gestionnaire_sans_profil_livreur_201(self):
+        r = self.client.post(
+            self.url,
+            {
+                "username": "gest",
+                "email": "gest@exemple.fictif",
+                "password": MOT_DE_PASSE,
+                "role": "gestionnaire",
+            },
+        )
+        self.assertEqual(r.status_code, 201)
+        self.assertFalse(Livreur.objects.filter(utilisateur__username="gest").exists())
+
+    def test_passage_au_role_livreur_cree_un_seul_profil(self):
+        compte = creer_compte("futur", RoleUtilisateur.GESTIONNAIRE)
+        url = reverse("accounts:utilisateur-detail", args=[compte.pk])
+        r = self.client.patch(url, {"role": "livreur", "nom": "Livreur Fictif"})
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(self.client.patch(url, {"first_name": "Test"}).status_code, 200)
+        self.assertEqual(Livreur.objects.get(utilisateur=compte).nom, "Livreur Fictif")
+
     def test_suppression_dun_autre_compte_204(self):
         autre = creer_compte("autre", RoleUtilisateur.GESTIONNAIRE)
         url = reverse("accounts:utilisateur-detail", args=[autre.pk])
